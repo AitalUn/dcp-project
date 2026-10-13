@@ -1,0 +1,10 @@
+ObjectType = Image
+NDims = 3
+ElementType = MET_UCHAR
+ElementByteOrderMSB = False
+ElementNumberOfChannels = 1
+CompressedData = True
+DimSize = 300 300 300
+ElementSize = 2.85 2.85 2.85
+Offset = 0.0 0.0 0.0
+ElementDataFile = model.raw.gz

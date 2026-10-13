@@ -1,0 +1,30 @@
+[project]
+name = "dcp-project"
+version = "0.1.0"
+description = "DimExDAM: 3D porous microstructures from 2D slices via diffusion-GAN"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "torch>=2.7",
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "tqdm",
+    "ipykernel",
+]
+
+# RTX 50xx (sm_120) needs CUDA 12.8 wheels
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
