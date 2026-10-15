@@ -1,0 +1,16 @@
+Using Comet.ml temp dir: C:\Users\Admin\Desktop\DCP_project\temp
+Using Comet.ml cache dir: C:\Users\Admin\Desktop\DCP_project\.comet-cache
+Using Comet.ml offline dir: C:\Users\Admin\Desktop\DCP_project\.comet-offline
+Preloading 1 images to CPU...
+Successfully loaded 1 images
+Memory usage: 1.03 MB
+Preloading 1 images to CPU...
+Successfully loaded 1 images
+Memory usage: 1.03 MB
+Preloading 1 images to CPU...
+Successfully loaded 1 images
+Memory usage: 1.03 MB
+
+Epochs:   0%|          | 0/1 [00:00<?, ?it/s]
+
+Epoch 0:   0%|          | 0/46 [00:00<?, ?it/s][A

@@ -11,11 +11,15 @@ dependencies = [
     "matplotlib",
     "tqdm",
     "ipykernel",
+    "plotly>=7.1.0",
+    "scikit-image>=0.26.0",
+    "torchvision>=0.26.0",
 ]
 
 # RTX 50xx (sm_120) needs CUDA 12.8 wheels
 [tool.uv.sources]
 torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
 
 [[tool.uv.index]]
 name = "pytorch-cu128"
@@ -28,3 +32,4 @@ where = ["src"]
 [build-system]
 requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
+

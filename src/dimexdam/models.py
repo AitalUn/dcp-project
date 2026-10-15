@@ -38,7 +38,7 @@ class Generator3D(nn.Module):
         self.dec = nn.ModuleList(ResBlock3D(ci + co, co, emb) for ci, co in zip(ch[:0:-1], ch[-2::-1]))
         self.out = nn.Sequential(nn.GroupNorm(8, ch[0]), nn.SiLU(), nn.Conv3d(ch[0], 1, 3, padding=1))
 
-    def forward(self, x, t, z):
+    def forward(self, x, t, z, logits=False):
         e = self.t_emb(t) + self.z_mlp(z)
         h, skips = self.inp(x), []
         for i, blk in enumerate(self.enc):                     # энкодер: 64 -> 32 -> 16 -> 8
@@ -47,7 +47,8 @@ class Generator3D(nn.Module):
         h = self.mid(h, e)
         for blk, s in zip(self.dec, reversed(skips[:-1])):     # декодер со skip-соединениями
             h = blk(torch.cat([F.interpolate(h, scale_factor=2), s], 1), e)
-        return torch.tanh(self.out(h))
+        out = self.out(h)
+        return out if logits else torch.tanh(out)              # logits=True: выход до tanh (не насыщается)
 
 
 class Discriminator2D(nn.Module):

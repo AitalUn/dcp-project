@@ -39,11 +39,16 @@ class Diffusion:
         return mean + _bc(self.std, t, x0) * (t > 0).float().view(-1, *[1] * (x0.dim() - 1)) * torch.randn_like(x0)
 
     @torch.no_grad()
-    def sample(self, G, n: int, size: int, nz: int, device, z=None):
-        """Инференс: x_T ~ N(0, I), затем T шагов генератора. z фиксирован на всю траекторию."""
+    def sample(self, G, n: int, size: int, nz: int, device, z=None, logits=False):
+        """Инференс: x_T ~ N(0, I), затем T шагов генератора. z фиксирован на всю траекторию.
+        На последнем шаге (t=0) апостериорное равно x̂_0, поэтому результат = tanh(логит).
+        logits=True возвращает сам логит: для подбора порога без насыщения tanh."""
         x = torch.randn(n, 1, size, size, size, device=device)
         z = torch.randn(n, nz, device=device) if z is None else z
         for t in reversed(range(self.T)):
             tt = torch.full((n,), t, device=device, dtype=torch.long)
-            x = self.posterior(G(x, tt, z), x, tt)
-        return x
+            last = logits and t == 0
+            out = G(x, tt, z, logits=last)
+            # posterior вызываем всегда: он тратит randn, и последовательность случайных чисел не меняется
+            x = self.posterior(torch.tanh(out) if last else out, x, tt)
+        return out if logits else x
